@@ -8,46 +8,68 @@
 
 
 <style>
-    .todo-list {
+    div {
         float: left;
         width: 50%;
-        padding: 0 1em 0 0;
+        padding: 0 0.5em 3em 0.5em;
         box-sizing: border-box;
     }
+    
+    h2 {
+        font-size: 2em;
+        font-weight: 200;
+        user-select: none;
+    }
 
-    input:checked + label{
-        background-color: rgb(180, 240, 100);
+    label {
+        display: block;
+        padding: 0.5em;
+        margin: 0.5em auto;
+        border-radius: 10px;
+        background-color: dodgerblue;
+        user-select: none;
+        color: white;
+    }
+
+    .checked {
+        background-color: lightblue;
     }
 
     button {
-        float: right;
-        height: 1em;
-        box-sizing: border-box;
-        padding: 0 0.5em;
-        line-height: 1;
-        background-color: transparent;
-        border: none;
-        color: rgb(170, 30, 30);
         opacity: 0;
         transition: opacity 0.2s;
+        float: right;
+        box-sizing: border-box;
+        padding: 0.2em;
+        border: none;
+        border-radius: 5px;
+        color: lightcoral;
+        background-color: white;
     }
 
-    label:hover .remove {
-        opacity: 1;
+    button:hover {
+        opacity: 0.5;
+    }
+    
+    button:focus {
+        outline: 0;
+        opacity: 0.9;
+        color: red;
     }
 </style>
 
-<div class='todo-list'>
+<div>
     <h2>{title}</h2>
     {#each $todos.filter(filter) as todo (todo.id)}
         <label
+                class:checked={todo.done}
                 in:receiveSlide="{{key: todo.id}}"
                 out:sendSlide="{{key: todo.id}}"
                 animate:flip
         >
             <input type=checkbox checked={todo.done} on:click="{() => todos.check(todo)}">
-            {todo.description}
-            <button class="remove" on:click="{() => todos.remove(todo)}">remove</button>
+            {todo.text}
+            <button on:click="{() => todos.remove(todo)}">remove</button>
         </label>
     {/each}
 </div>

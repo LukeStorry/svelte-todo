@@ -4,30 +4,69 @@
 </script>
 
 <style>
-    .input-todo {
+    h1 {
+        color: dodgerblue;
+        text-align: center;
+        font-size: 3em;
+        font-weight: 200;
+        user-select: none;
+    }
+
+    div {
+        max-width: 42em;
+        width: 100vw;
+        margin: 1em auto;
+        padding: 0 2em;
+    }
+
+    input {
         font-size: 1.4em;
         width: 100%;
-        margin: 2em 0 1em 0;
+        padding: .25em;
+        margin: 1em 0;
+        border-radius: 10px;
+        border: lightblue 3px solid;
     }
 
-    .container {
-        max-width: 36em;
-        margin: 0 auto;
+    input:focus {
+        outline: 0;
+        border: dodgerblue 3px solid;
     }
 
+    footer {
+        font-size: smaller;
+        padding: 3px;
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        width: 100%;
+        color: aliceblue;
+        background: dodgerblue;
+        display: flex;
+        justify-content: space-around;
+    }
+
+    a {
+        color: aliceblue;
+        margin: 0 10px;
+    }
 </style>
 
-<h1>Svelte-Todo</h1>
+<h1>Todo</h1>
 
-<div class='container'>
+<div>
     <input
-            class="input-todo"
             type="text"
-            placeholder="add here"
+            placeholder="I want to ..."
             on:keydown="{event => event.key === 'Enter' && todos.add(event.target)}"
     >
     <TodoList title="todo" filter={t => !t.done}/>
     <TodoList title="done" filter={t => t.done}/>
-    
+
 </div>
 
+<footer>
+    <a href="https://github.com/LukeStorry/svelte-todo">Sourcecode</a>
+    This app uses localStorage to save your todo-list between page refreshes.
+    <a href="https://lkst.uk">by Luke Storry</a>
+</footer>

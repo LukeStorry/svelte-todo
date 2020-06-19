@@ -1,23 +1,32 @@
 import {writable} from 'svelte/store';
 
 function createTodosList() {
-    let uid = 1;
     let placeholderTodos = [
-        {id: uid++, done: false, description: 'write some more todos'},
-        {id: uid++, done: true, description: 'add a todo item'},
-        {id: uid++, done: false, description: 'drink more water'}
+        {id: 1, done: false, text: 'write some more todos'},
+        {id: 2, done: true, text: 'add a todo item'},
+        {id: 3, done: false, text: 'drink more water'}
     ];
 
-    const {subscribe, update} = writable(placeholderTodos);
+    let storedTodos = localStorage.getItem("todos");
+    let startingTodos = placeholderTodos
+    if (storedTodos) {
+        try {
+            startingTodos = JSON.parse(storedTodos)
+        } catch (e) {
+            console.log("Error parsing stored todos:", storedTodos, e)
+        }
+    }
+
+    const {subscribe, update} = writable(startingTodos);
+    subscribe(todos => localStorage.setItem("todos", JSON.stringify(todos)))
 
     const add = input => {
-        const todo = {
-            id: uid++,
-            done: false,
-            description: input.value
-        };
-
-        update(todos => [todo, ...todos]);
+        update(todos =>
+            [{
+                id: Math.max(...todos.map(t => t.id)) + 1,
+                done: false,
+                text: input.value
+            }, ...todos]);
         input.value = '';
     }
 
