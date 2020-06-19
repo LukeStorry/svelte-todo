@@ -1,35 +1,6 @@
 <script>
     import TodoList from './TodoList.svelte'
-    let uid = 1;
-    let todos = [
-        {id: uid++, done: false, description: 'write some more todos'},
-        {id: uid++, done: true, description: 'add a todo item'},
-        {id: uid++, done: false, description: 'drink more water'},
-        {id: uid++, done: true, description: 'write some great code'},
-        {id: uid++, done: false, description: 'fix bugs'},
-    ];
-
-    const add = input => {
-        const todo = {
-            id: uid++,
-            done: false,
-            description: input.value
-        };
-
-        todos = [todo, ...todos];
-        input.value = '';
-    }
-
-    const remove = todo => {
-        console.log(remove, todo)
-        todos = todos.filter(t => t !== todo);
-    }
-    
-    const check = todo => {
-        todo.done = !todo.done;
-        remove(todo);
-        todos = todos.concat(todo);
-    };
+    import {todos} from './stores.js'
 </script>
 
 <style>
@@ -53,10 +24,10 @@
             class="input-todo"
             type="text"
             placeholder="add here"
-            on:keydown="{event => event.key === 'Enter' && add(event.target)}"
+            on:keydown="{event => event.key === 'Enter' && todos.add(event.target)}"
     >
-    <TodoList title="todo" todos={todos.filter(t => !t.done)} {remove} {check}/>
-    <TodoList title="done" todos={todos.filter(t => t.done)} {remove}{check}/>
+    <TodoList title="todo" filter={t => !t.done}/>
+    <TodoList title="done" filter={t => t.done}/>
     
 </div>
 

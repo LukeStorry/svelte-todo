@@ -1,9 +1,9 @@
 <script>
-    import {sendSlide, receiveSlide} from './Transitions.js';
+    export let title, filter;
+    
+    import {sendSlide, receiveSlide} from './transitions.js';
     import { flip } from 'svelte/animate';
-
-    export let title, todos, remove, check;
-
+    import {todos} from './stores.js'
 </script>
 
 
@@ -39,15 +39,15 @@
 
 <div class='todo-list'>
     <h2>{title}</h2>
-    {#each todos as todo (todo.id)}
+    {#each $todos.filter(filter) as todo (todo.id)}
         <label
                 in:receiveSlide="{{key: todo.id}}"
                 out:sendSlide="{{key: todo.id}}"
                 animate:flip
         >
-            <input type=checkbox checked={todo.done} on:click="{() => check(todo)}">
+            <input type=checkbox checked={todo.done} on:click="{() => todos.check(todo)}">
             {todo.description}
-            <button class="remove" on:click="{() => remove(todo)}">remove</button>
+            <button class="remove" on:click="{() => todos.remove(todo)}">remove</button>
         </label>
     {/each}
 </div>
